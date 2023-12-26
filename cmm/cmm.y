@@ -5,7 +5,7 @@
    2005.06.13
    Hisashi Nakai, University of Tsukuba
 **/
-  
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,7 +15,7 @@
 FILE *ofile;
 
 int level = 0;
-int offset = 0; 
+int offset = 0;
 
 typedef struct Codeval {
   cptr* code;
@@ -273,7 +273,7 @@ st	: WRITE E SEMI
 				makecode(O_STO, level - tmp->l, tmp->a));
 	    $$.val = 0;
 	  }
-	| ifstmt 
+	| ifstmt
 	| whilestmt
 	| { addlist("block", BLOCK, 0, 0, 0); }
 	  body
@@ -281,7 +281,7 @@ st	: WRITE E SEMI
 	    $$.code = $2.code;
 	    $$.val = $2.val;
 	    delete_block();
-	  }  
+	  }
 	| RETURN E SEMI
 	  {
 	    list* tmp2;
@@ -340,8 +340,8 @@ whilestmt	: WHILE cond DO st
 	    tmp = mergecode(tmp, makecode(O_JMP, 0, label0));
 	    tmp = mergecode(tmp, makecode(O_LAB, 0, label1));
 
-	    $$.code = tmp; 
-			
+	    $$.code = tmp;
+
 	    $$.val = 0;
 	  }
 	;

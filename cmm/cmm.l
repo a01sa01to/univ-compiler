@@ -21,7 +21,7 @@
 "if"		{ ECHO;  return IF; }
 "then"		{ ECHO;  return THEN; }
 "else"		{ ECHO;  return ELSE; }
-"endif"		{ ECHO;  return ENDIF; } 
+"endif"		{ ECHO;  return ENDIF; }
 "while"		{ ECHO;  return WHILE; }
 "do"		{ ECHO;  return DO; }
 "read"		{ ECHO;  return READ; }
@@ -33,11 +33,11 @@
 "<"		{ ECHO;  return LT; }
 "!="		{ ECHO;  return NE; }
 "=="		{ ECHO;  return EQ; }
-[0-9]+		{ ECHO;  
+[0-9]+		{ ECHO;
                   yylval.val = atoi(yytext);
 		  return NUMBER;
                 }
-[a-z][a-z0-9]*	{ ECHO;  
+[a-z][a-z0-9]*	{ ECHO;
 		  yylval.name = (char*)malloc(strlen(yytext)+1);
                   strcpy(yylval.name, yytext);
 		  return ID;

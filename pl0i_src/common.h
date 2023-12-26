@@ -1,5 +1,9 @@
 /* ------------------------- common.h -------------------------- */
-typedef enum { FALSE, TRUE } bool;
+typedef enum
+{
+  FALSE,
+  TRUE
+} bool;
 
 extern void error();
 extern char *strsave();

@@ -3,16 +3,14 @@
 
 #define SYSTEM_AREA 3
 
-typedef
-struct LIST {
-  char        *name;
-  int          kind;
-  int          a;
-  int          l;
-  int          params;
-  struct LIST *prev;
+typedef struct LIST {
+  char* name;
+  int kind;
+  int a;
+  int l;
+  int params;
+  struct LIST* prev;
 } list;
-
 
 list* search_block(char*);
 list* search_all(char*);
@@ -31,7 +29,12 @@ void sem_error1(char* kind);
 void sem_error2(char* kind);
 void sem_error3(char* s, int n1, int n2);
 
-
-enum KIND { VARIABLE, BLOCK, FUNC, CONSTANT };
+enum KIND
+{
+  VARIABLE,
+  BLOCK,
+  FUNC,
+  CONSTANT
+};
 
 #endif

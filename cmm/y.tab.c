@@ -74,7 +74,7 @@
    2005.06.13
    Hisashi Nakai, University of Tsukuba
 **/
-  
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -84,7 +84,7 @@
 FILE *ofile;
 
 int level = 0;
-int offset = 0; 
+int offset = 0;
 
 typedef struct Codeval {
   cptr* code;
@@ -1826,8 +1826,8 @@ yyreduce:
 	    tmp = mergecode(tmp, makecode(O_JMP, 0, label0));
 	    tmp = mergecode(tmp, makecode(O_LAB, 0, label1));
 
-	    yyval.code = tmp; 
-			
+	    yyval.code = tmp;
+
 	    yyval.val = 0;
 	  }
 #line 1834 "y.tab.c"
