@@ -1,0 +1,140 @@
+( INT, 0, 3 )
+( LIT, 0, 0 )  //minimum:3
+( LIT, 0, 0 )  //minidx:4
+( LIT, 0, 1000000000 )  //inf:5
+( INT, 0, 5 )  // ans:6-10
+( CSP, 0, 0 )  // input:11-15
+( CSP, 0, 0 )
+( CSP, 0, 0 )
+( CSP, 0, 0 )
+( CSP, 0, 0 )
+( CAL, 0, 1 )  // ans[0]
+( STO, 0, 0 )  // pop
+( LOD, 0, 3 )
+( STO, 0, 6 )
+( LOD, 0, 4 )
+( CAL, 0, 6 )
+( STO, 0, 0 )  // pop
+( CAL, 0, 1 )  // ans[1]
+( STO, 0, 0 )  // pop
+( LOD, 0, 3 )
+( STO, 0, 7 )
+( LOD, 0, 4 )
+( CAL, 0, 6 )
+( STO, 0, 0 )  // pop
+( CAL, 0, 1 )  // ans[2]
+( STO, 0, 0 )  // pop
+( LOD, 0, 3 )
+( STO, 0, 8 )
+( LOD, 0, 4 )
+( CAL, 0, 6 )
+( STO, 0, 0 )  // pop
+( CAL, 0, 1 )  // ans[3]
+( STO, 0, 0 )  // pop
+( LOD, 0, 3 )
+( STO, 0, 9 )
+( LOD, 0, 4 )
+( CAL, 0, 6 )
+( STO, 0, 0 )  // pop
+( CAL, 0, 1 )  // ans[4]
+( LOD, 0, 3 )
+( STO, 0, 10 )
+( LOD, 0, 4 )
+( CAL, 0, 6 )
+( STO, 0, 0 )  // pop
+( LOD, 0, 6 )  // output
+( CSP, 0, 1 )
+( LOD, 0, 7 )
+( CSP, 0, 1 )
+( LOD, 0, 8 )
+( CSP, 0, 1 )
+( LOD, 0, 9 )
+( CSP, 0, 1 )
+( LOD, 0, 10 )
+( CSP, 0, 1 )
+( CSP, 0, 2 )
+( OPR, 0, 0 )
+
+
+( LAB, 0, 1 )  // find_minimum
+( INT, 0, 3 )  // -1:15,-2:14,...
+( LOD, 0, -5 )
+( STO, 0, -13 )  // minim=input[0]
+( LIT, 0, 0 )
+( STO, 0, -12 )  // minidx=0
+( LOD, 0, -13 )  // input[1]
+( LOD, 0, -4 )
+( OPR, 0, 12 )
+( JPC, 0, 2 )
+( LOD, 0, -4 )
+( STO, 0, -13 )
+( LIT, 0, 1 )
+( STO, 0, -12 )
+( LAB, 0, 2 )  // input[2]
+( LOD, 0, -13 )
+( LOD, 0, -3 )
+( OPR, 0, 12 )
+( JPC, 0, 3 )
+( LOD, 0, -3 )
+( STO, 0, -13 )
+( LIT, 0, 2 )
+( STO, 0, -12 )
+( LAB, 0, 3 )  // input[3]
+( LOD, 0, -13 )
+( LOD, 0, -2 )
+( OPR, 0, 12 )
+( JPC, 0, 4 )
+( LOD, 0, -2 )
+( STO, 0, -13 )
+( LIT, 0, 3 )
+( STO, 0, -12 )
+( LAB, 0, 4 )  // input[4]
+( LOD, 0, -13 )
+( LOD, 0, -1 )
+( OPR, 0, 12 )
+( JPC, 0, 5 )
+( LOD, 0, -1 )
+( STO, 0, -13 )
+( LIT, 0, 4 )
+( STO, 0, -12 )
+( LAB, 0, 5 )  // end
+( RET, 0, 0 )
+
+( LAB, 0, 6 )  // f(i): update input[i] to inf
+( INT, 0, 3 )  // -1:16,...
+( LOD, 0, -1 )
+( LIT, 0, 0 )
+( OPR, 0, 8 )
+( JPC, 0, 7 )  // i=0
+( LOD, 0, -12 )
+( STO, 0, -6 )
+( LAB, 0, 7 )
+( LOD, 0, -1 )
+( LIT, 0, 1 )
+( OPR, 0, 8 )
+( JPC, 0, 8 )  // i=1
+( LOD, 0, -12 )
+( STO, 0, -5 )
+( LAB, 0, 8 )
+( LOD, 0, -1 )
+( LIT, 0, 2 )
+( OPR, 0, 8 )
+( JPC, 0, 9 )  // i=2
+( LOD, 0, -12 )
+( STO, 0, -4 )
+( LAB, 0, 9 )
+( LOD, 0, -1 )
+( LIT, 0, 3 )
+( OPR, 0, 8 )
+( JPC, 0, 10 )  // i=3
+( LOD, 0, -12 )
+( STO, 0, -3 )
+( LAB, 0, 10 )
+( LOD, 0, -1 )
+( LIT, 0, 4 )
+( OPR, 0, 8 )
+( JPC, 0, 11 )  // i=4
+( LOD, 0, -12 )
+( STO, 0, -2 )
+( LAB, 0, 11 )
+( RET, 0, 1 )
