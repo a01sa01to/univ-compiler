@@ -25,6 +25,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          name: artifact
           path: |
             ./cmm/cmm
             ./pl0i_src/pl0i
@@ -37,6 +38,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download Artifact
         uses: actions/download-artifact@v4
+        with:
+          name: artifact
       - name: Create source file
         run: |
           cat << EOF > code.cmm
@@ -53,25 +56,28 @@ jobs:
             writeln;
           }
           EOF
-        working-directory: ./artifact
+        working-directory: ./cmm
       - name: Generate code.output
         run: ./cmm < code.cmm
-        working-directory: ./artifact
+        working-directory: ./cmm
+      - name: Move code.output
+        run: mv code.output ../pl0i_src
+        working-directory: ./cmm
       - name: Create sample input
         run: |
           cat << EOF > input.txt
           5
           EOF
-        working-directory: ./artifact
+        working-directory: ./pl0i_src
       - name: Run code.pl0i
         run: ./pl0i < input.txt > output.txt
-        working-directory: ./artifact
+        working-directory: ./pl0i_src
       - name: Create expected output
         run: |
           cat << EOF > expected.txt
           120
           EOF
-        working-directory: ./artifact
+        working-directory: ./pl0i_src
       - name: Compare output
         run: |
           echo ::group::output.txt
@@ -83,4 +89,4 @@ jobs:
           echo ::group::diff
           diff output.txt expected.txt || true
           echo ::endgroup::
-        working-directory: ./artifact
+        working-directory: ./pl0i_src
