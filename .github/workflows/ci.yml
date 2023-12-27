@@ -22,10 +22,6 @@ jobs:
       - name: Build pl0i
         run: make
         working-directory: ./pl0i_src
-      - name: chmod
-        run: |
-          chmod +x ./cmm/cmm
-          chmod +x ./pl0i_src/pl0i
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -44,6 +40,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: artifact
+      - name: chmod
+        run: |
+          chmod +x ./cmm/cmm
+          chmod +x ./pl0i_src/pl0i
       - name: Create source file
         run: |
           cat << EOF > code.cmm
@@ -110,6 +110,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: artifact
+      - name: chmod
+        run: |
+          chmod +x ./cmm/cmm
+          chmod +x ./pl0i_src/pl0i
       - name: Create source file
         run: |
           cat << EOF > code.cmm
