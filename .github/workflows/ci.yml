@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +22,21 @@ jobs:
       - name: Build pl0i
         run: make
         working-directory: ./pl0i_src
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./cmm/cmm
+            ./pl0i_src/pl0i
+
+  test-01:
+    name: Factorial
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
       - name: Create source file
         run: |
           cat << EOF > code.cmm
