@@ -62,7 +62,12 @@ jobs:
           EOF
         working-directory: ./cmm
       - name: Generate code.output
-        run: ./cmm < code.cmm
+        run: |
+          ./cmm < code.cmm 2> err.txt
+          if [ -s err.txt ]; then
+            cat err.txt
+            exit 1
+          fi
         working-directory: ./cmm
       - name: Move code.output
         run: mv code.output ../pl0i_src
@@ -150,7 +155,12 @@ jobs:
           EOF
         working-directory: ./cmm
       - name: Generate code.output
-        run: ./cmm < code.cmm
+        run: |
+          ./cmm < code.cmm 2> err.txt
+          if [ -s err.txt ]; then
+            cat err.txt
+            exit 1
+          fi
         working-directory: ./cmm
       - name: Move code.output
         run: mv code.output ../pl0i_src
