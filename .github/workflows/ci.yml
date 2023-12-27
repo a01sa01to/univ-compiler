@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y bison flex libbison-dev libfl-dev
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: bison flex libbison-dev libfl-dev
+          version: 1.0
       - name: Build cmm
         run: make
         working-directory: ./cmm
