@@ -4,6 +4,7 @@ code.o
 env.o
 lex.yy.c
 code.output
+inter.o
 
 pl0i
 myinter2.o

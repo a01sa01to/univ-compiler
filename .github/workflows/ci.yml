@@ -31,7 +31,7 @@ jobs:
             ./pl0i_src/pl0i
 
   test-01:
-    name: Factorial
+    name: Test Factorial
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -80,6 +80,123 @@ jobs:
         run: |
           cat << EOF > expected.txt
           120
+          EOF
+        working-directory: ./pl0i_src
+      - name: Compare output
+        run: |
+          echo ::group::output.txt
+          cat -n output.txt
+          echo ::endgroup::
+          echo ::group::expected.txt
+          cat -n expected.txt
+          echo ::endgroup::
+          echo ::group::diff
+          diff output.txt expected.txt || true
+          echo ::endgroup::
+        working-directory: ./pl0i_src
+
+  test-02:
+    name: Test Modulo
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+      - name: chmod
+        run: |
+          chmod +x ./cmm/cmm
+          chmod +x ./pl0i_src/pl0i
+      - name: Create source file
+        run: |
+          cat << EOF > code.cmm
+          main {
+            var a, b;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+            read a;
+            read b;
+            write a % b;
+            writeln;
+          }
+          EOF
+        working-directory: ./cmm
+      - name: Generate code.output
+        run: ./cmm < code.cmm
+        working-directory: ./cmm
+      - name: Move code.output
+        run: mv code.output ../pl0i_src
+        working-directory: ./cmm
+      - name: Create sample input
+        run: |
+          cat << EOF > input.txt
+          5
+          3
+          5
+          -3
+          5
+          10
+          5
+          -10
+          -5
+          3
+          -5
+          -3
+          -5
+          10
+          -5
+          -10
+          5
+          0
+          EOF
+        working-directory: ./pl0i_src
+      - name: Run code.pl0i
+        run: ./pl0i < input.txt > output.txt
+        working-directory: ./pl0i_src
+      - name: Create expected output
+        run: |
+          cat << EOF > expected.txt
+          2
+          2
+          5
+          5
+          -2
+          -2
+          -5
+          -5
+          Floating point exception
           EOF
         working-directory: ./pl0i_src
       - name: Compare output
