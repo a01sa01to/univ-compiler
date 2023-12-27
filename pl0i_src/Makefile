@@ -9,5 +9,5 @@ myinter2.o	: inter.c
 common.o	: common.c
 	$(CC) -c common.c
 
-clean:	
+clean:
 	rm -f *~ *.o pl0i
