@@ -21,3 +21,53 @@ jobs:
       - name: Build pl0i
         run: make
         working-directory: ./pl0i_src
+      - name: Create source file
+        run: |
+          cat << EOF > code.cmm
+          fact(n) {
+            if n < 1 then return 1;
+            else return n * fact(n - 1);
+            endif;
+          }
+
+          main {
+            var n;
+            read n;
+            write fact(n);
+            writeln;
+          }
+          EOF
+        working-directory: ./cmm
+      - name: Generate code.output
+        run: ./cmm < code.cmm
+        working-directory: ./cmm
+      - name: Move code.output
+        run: mv code.output ../pl0i_src
+        working-directory: ./cmm
+      - name: Create sample input
+        run: |
+          cat << EOF > input.txt
+          5
+          EOF
+        working-directory: ./pl0i_src
+      - name: Run code.pl0i
+        run: ./pl0i < input.txt > output.txt
+        working-directory: ./pl0i_src
+      - name: Create expected output
+        run: |
+          cat << EOF > expected.txt
+          120
+          EOF
+        working-directory: ./pl0i_src
+      - name: Compare output
+        run: |
+          echo ::group::output.txt
+          cat -n output.txt
+          echo ::endgroup::
+          echo ::group::expected.txt
+          cat -n expected.txt
+          echo ::endgroup::
+          echo ::group::diff
+          diff output.txt expected.txt
+          echo ::endgroup::
+        working-directory: ./pl0i_src
