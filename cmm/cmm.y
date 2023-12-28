@@ -17,6 +17,8 @@ FILE *ofile;
 int level = 0;
 int offset = 0;
 
+int mod_label = -1;
+
 typedef struct Codeval {
   cptr* code;
   int   val;
@@ -37,7 +39,7 @@ typedef struct Codeval {
 %token SEMI
 %token PLUS MINUS
 %token PLUS2 MINUS2
-%token MULT DIV
+%token MULT DIV MOD
 %token NUMBER
 %token IF THEN ELSE ENDIF
 %token WHILE DO
@@ -450,6 +452,37 @@ T:
         mergecode($1.code, $3.code),
         makecode(O_OPR, 0, 5)
       );
+    }
+  |
+    T MOD F {
+      cptr *tmp;
+      tmp = mergecode($1.code, $3.code); // a b
+
+      if (mod_label == -1) {
+        mod_label = makelabel();
+        int mod_after = makelabel();
+
+        tmp = mergecode(tmp, makecode(O_CAL, 0, mod_label));
+        tmp = mergecode(tmp, makecode(O_JMP, 0, mod_after));
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, mod_label));
+        tmp = mergecode(tmp, makecode(O_INT, 0, SYSTEM_AREA));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -2)); // a
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -2)); // a a
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -1)); // a a b
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 5));  // a a/b
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -1)); // a a/b b
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 4));  // a a/b*b
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 3));  // a%b
+        tmp = mergecode(tmp, makecode(O_RET, 0, 2));
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, mod_after));
+      }
+      else {
+        tmp = mergecode(tmp, makecode(O_CAL, 0, mod_label));
+      }
+
+      $$.code = tmp;
     }
   |
     F {
