@@ -398,7 +398,7 @@ jobs:
           25
           -125
           1
-          54 8
+          54 16
           EOF
         working-directory: ./pl0i_src
       - name: Compare output
