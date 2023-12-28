@@ -1,0 +1,5 @@
+cmm
+y.tab.c
+lex.yy.c
+*.o
+code.output
