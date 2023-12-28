@@ -340,6 +340,9 @@ jobs:
             read b;
             write a ^ b;
             writeln;
+            write 2 * 3 ^ 3;
+            write 2 ^ 2 ^ 2;
+            writeln;
           }
           EOF
         working-directory: ./cmm
@@ -395,6 +398,7 @@ jobs:
           25
           -125
           1
+          54 8
           EOF
         working-directory: ./pl0i_src
       - name: Compare output

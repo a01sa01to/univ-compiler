@@ -495,7 +495,7 @@ T:
 
 
 FC:
-    F POW F {
+    FC POW F {
       cptr *tmp;
       tmp = mergecode($1.code, $3.code); // a b
 
