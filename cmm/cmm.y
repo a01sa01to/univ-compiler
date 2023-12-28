@@ -454,15 +454,22 @@ T:
   |
     T MOD F {
       cptr *tmp;
+      list *tmpl = gettail();
 
-      tmp = mergecode($1.code, $1.code);  // a a
-      tmp = mergecode(tmp, $3.code); // a a b
-      tmp = mergecode(tmp, makecode(O_OPR, 0, 5));  // a (a/b)
-      tmp = mergecode(tmp, $3.code);  // a (a/b) b
-      tmp = mergecode(tmp, makecode(O_OPR, 0, 4));  // a (a/b)*b
-      tmp = mergecode(tmp, makecode(O_OPR, 0, 3));  // a - (a/b)*b
+      tmp = mergecode($1.code, $3.code);
+      int a_offset = tmpl->prev->a;
+      int b_offset = tmpl->a;
+      tmp = mergecode(tmp, makecode(O_LOD, 0, a_offset)); // a b a
+      tmp = mergecode(tmp, makecode(O_LOD, 0, b_offset)); // a b a b
+      tmp = mergecode(tmp, makecode(O_OPR, 0, 5));  // a b a/b
+      tmp = mergecode(tmp, makecode(O_LOD, 0, b_offset));  // a b (a/b) b
+      tmp = mergecode(tmp, makecode(O_OPR, 0, 4));  // a b (a/b)*b
+      tmp = mergecode(tmp, makecode(O_STO, 0, b_offset));  // a (a/b)*b
+      tmp = mergecode(tmp, makecode(O_OPR, 0, 3));  // a-(a/b)*b
 
       $$.code = tmp;
+
+      printf("MOD done\n");
     }
   |
     F {
