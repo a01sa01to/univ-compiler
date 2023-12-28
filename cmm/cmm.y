@@ -19,6 +19,7 @@ int offset = 0;
 
 int mod_label = -1;
 
+
 typedef struct Codeval {
   cptr* code;
   int   val;
@@ -40,6 +41,7 @@ typedef struct Codeval {
 %token PLUS MINUS
 %token PLUS2 MINUS2
 %token MULT DIV MOD
+%token POW
 %token NUMBER
 %token IF THEN ELSE ENDIF
 %token WHILE DO
@@ -440,21 +442,21 @@ E:
 
 
 T:
-    T MULT F {
+    T MULT FC {
       $$.code = mergecode(
         mergecode($1.code, $3.code),
         makecode(O_OPR, 0, 4)
       );
     }
   |
-    T DIV F {
+    T DIV FC {
       $$.code = mergecode(
         mergecode($1.code, $3.code),
         makecode(O_OPR, 0, 5)
       );
     }
   |
-    T MOD F {
+    T MOD FC {
       cptr *tmp;
       tmp = mergecode($1.code, $3.code); // a b
 
@@ -485,10 +487,20 @@ T:
       $$.code = tmp;
     }
   |
-    F {
+    FC {
       $$.code = $1.code;
     }
   ;
+
+
+FC:
+    F POW F {
+
+    }
+  |
+    F {
+      $$.code = $1.code;
+    }
 
 
 F:
