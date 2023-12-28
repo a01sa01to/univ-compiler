@@ -304,22 +304,38 @@ jobs:
             read b;
             write a ^ b;
             writeln;
-            var a, b;
             read a;
             read b;
             write a ^ b;
             writeln;
-            var a, b;
             read a;
             read b;
             write a ^ b;
             writeln;
-            var a, b;
             read a;
             read b;
             write a ^ b;
             writeln;
-            var a, b;
+            read a;
+            read b;
+            write a ^ b;
+            writeln;
+            read a;
+            read b;
+            write a ^ b;
+            writeln;
+            read a;
+            read b;
+            write a ^ b;
+            writeln;
+            read a;
+            read b;
+            write a ^ b;
+            writeln;
+            read a;
+            read b;
+            write a ^ b;
+            writeln;
             read a;
             read b;
             write a ^ b;
@@ -350,7 +366,17 @@ jobs:
           5
           3
           5
-          4
+          -1
+          -5
+          0
+          -5
+          1
+          -5
+          2
+          -5
+          3
+          -5
+          -1
           EOF
         working-directory: ./pl0i_src
       - name: Run code.pl0i
@@ -363,7 +389,12 @@ jobs:
           5
           25
           125
-          625
+          1
+          1
+          -5
+          25
+          -125
+          1
           EOF
         working-directory: ./pl0i_src
       - name: Compare output
