@@ -513,13 +513,13 @@ FC:
         tmp = mergecode(tmp, makecode(O_INT, 0, SYSTEM_AREA));
         tmp = mergecode(tmp, makecode(O_LOD, 0, -2)); // a 3
         tmp = mergecode(tmp, makecode(O_LOD, 0, -1)); // x 4
-        tmp = mergecode(tmp, makecode(O_LIT, 0, 1)); // ret, 5
+        tmp = mergecode(tmp, makecode(O_LIT, 0, 1)); // ret 5
 
         tmp = mergecode(tmp, makecode(O_LAB, 0, while_start));
         // if x <= 0 end
         tmp = mergecode(tmp, makecode(O_LOD, 0, 4));
         tmp = mergecode(tmp, makecode(O_LIT, 0, 0));
-        tmp = mergecode(tmp, makecode(O_OPR, 0, 13));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 12));
         tmp = mergecode(tmp, makecode(O_JPC, 0, while_end));
 
         // if x % 2 == 1 ret = ret * a
@@ -543,6 +543,8 @@ FC:
         tmp = mergecode(tmp, makecode(O_LIT, 0, 2));
         tmp = mergecode(tmp, makecode(O_OPR, 0, 5));
         tmp = mergecode(tmp, makecode(O_STO, 0, 4));
+
+        tmp = mergecode(tmp, makecode(O_JMP, 0, while_start));
 
         tmp = mergecode(tmp, makecode(O_LAB, 0, while_end));
         tmp = mergecode(tmp, makecode(O_RET, 0, 2));
