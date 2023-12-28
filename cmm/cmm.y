@@ -18,6 +18,7 @@ int level = 0;
 int offset = 0;
 
 int mod_label = -1;
+int pow_label = -1;
 
 
 typedef struct Codeval {
@@ -495,7 +496,64 @@ T:
 
 FC:
     F POW F {
+      cptr *tmp;
+      tmp = mergecode($1.code, $3.code); // a b
 
+      if (pow_label == -1) {
+        pow_label = makelabel();
+        int pow_after = makelabel();
+        int while_start = makelabel();
+        int while_end = makelabel();
+        int even_jmp = makelabel();
+
+        tmp = mergecode(tmp, makecode(O_CAL, 0, pow_label));
+        tmp = mergecode(tmp, makecode(O_JMP, 0, pow_after));
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, pow_label));
+        tmp = mergecode(tmp, makecode(O_INT, 0, SYSTEM_AREA));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -2)); // a 3
+        tmp = mergecode(tmp, makecode(O_LOD, 0, -1)); // x 4
+        tmp = mergecode(tmp, makecode(O_LIT, 0, 1)); // ret, 5
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, while_start));
+        // if x <= 0 end
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 4));
+        tmp = mergecode(tmp, makecode(O_LIT, 0, 0));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 13));
+        tmp = mergecode(tmp, makecode(O_JPC, 0, while_end));
+
+        // if x % 2 == 1 ret = ret * a
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 4));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 6));
+        tmp = mergecode(tmp, makecode(O_JPC, 0, even_jmp));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 5));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 3));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 4));
+        tmp = mergecode(tmp, makecode(O_STO, 0, 5));
+
+        // a = a * a
+        tmp = mergecode(tmp, makecode(O_LAB, 0, even_jmp));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 3));
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 3));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 4));
+        tmp = mergecode(tmp, makecode(O_STO, 0, 3));
+
+        // x = x / 2
+        tmp = mergecode(tmp, makecode(O_LOD, 0, 4));
+        tmp = mergecode(tmp, makecode(O_LIT, 0, 2));
+        tmp = mergecode(tmp, makecode(O_OPR, 0, 5));
+        tmp = mergecode(tmp, makecode(O_STO, 0, 4));
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, while_end));
+        tmp = mergecode(tmp, makecode(O_RET, 0, 2));
+
+        tmp = mergecode(tmp, makecode(O_LAB, 0, pow_after));
+      }
+      else {
+        tmp = mergecode(tmp, makecode(O_CAL, 0, pow_label));
+      }
+
+      $$.code = tmp;
     }
   |
     F {
