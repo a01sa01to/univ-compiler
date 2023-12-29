@@ -48,6 +48,7 @@ typedef struct Codeval {
 %token WHILE DO
 %token READ
 %token COLEQ
+%token GOTO COL
 %token GE GT LE LT NE EQ
 %token RETURN
 
@@ -317,6 +318,37 @@ st:
 
       $$.code = mergecode($2.code, makecode(O_RET, 0, tmp2->params));
       $$.val = 0;
+    }
+  |
+    GOTO ID SEMI {
+      int label;
+
+      list* tmp = search_block($2.name);
+      if (tmp == NULL) {
+        label = makelabel();
+        addlist($2.name, REF_LABEL, label, 0, 0);
+      }
+      else {
+        label = tmp->a;
+      }
+
+      $$.code = makecode(O_JMP, 0, label);
+    }
+  |
+    ID COL {
+      int label;
+
+      list* tmp = search_block($1.name);
+      if (tmp == NULL) {
+        label = makelabel();
+        addlist($1.name, LABEL, label, 0, 0);
+      }
+      else {
+        tmp->kind = LABEL;
+        label = tmp->a;
+      }
+
+      $$.code = makecode(O_LAB, 0, label);
     }
   ;
 
@@ -676,6 +708,16 @@ main(){
 
   initialize();
   yyparse();
+
+  // Check if the label is defined
+  list* tmp = gettail();
+  while (tmp != NULL) {
+    if (tmp->kind == REF_LABEL) {
+      fprintf(stderr,"label %s is referenced but not defined\n", tmp->name);
+      exit(EXIT_FAILURE);
+    }
+    tmp = tmp->prev;
+  }
 
   if (fclose(ofile) != 0){
     perror("ofile");
