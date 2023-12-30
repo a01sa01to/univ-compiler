@@ -343,9 +343,12 @@ st:
         label = makelabel();
         addlist($1.name, LABEL, label, 0, 0);
       }
-      else {
+      else if (tmp->kind == REF_LABEL) {
         tmp->kind = LABEL;
         label = tmp->a;
+      }
+      else {
+        sem_error1("label");
       }
 
       $$.code = makecode(O_LAB, 0, label);
