@@ -520,3 +520,120 @@ jobs:
           diff output.txt expected.txt || true
           echo ::endgroup::
         working-directory: ./pl0i_src
+
+  test-06:
+    name: Test Func Each Other
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+      - name: chmod
+        run: |
+          chmod +x ./cmm/cmm
+          chmod +x ./pl0i_src/pl0i
+      - name: Create source file
+        run: |
+          cat << EOF > code.cmm
+          func1(n) {
+            if n < 1 then return 0;
+            else return n + func2(n - 1);
+          }
+          func2(n) {
+            if n < 1 then return 1;
+            else return n * func1(n - 1);
+          }
+          main {
+            var n;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+            read n;
+            write func1(n);
+            writeln;
+          }
+          EOF
+        working-directory: ./cmm
+      - name: Generate code.output
+        run: |
+          ./cmm < code.cmm 2> err.txt
+          if [ -s err.txt ]; then
+            cat err.txt
+            exit 1
+          fi
+        working-directory: ./cmm
+      - name: Move code.output
+        run: mv code.output ../pl0i_src
+        working-directory: ./cmm
+      - name: Create sample input
+        run: |
+          cat << EOF > input.txt
+          0
+          1
+          2
+          3
+          4
+          5
+          6
+          7
+          8
+          9
+          EOF
+        working-directory: ./pl0i_src
+      - name: Run code.pl0i 1
+        run: ./pl0i < input.txt > output.txt || true
+        working-directory: ./pl0i_src
+      - name: Create expected output
+        run: |
+          cat << EOF > expected.txt
+          0
+          2
+          2
+          7
+          10
+          33
+          56
+          205
+          400
+          1649
+          EOF
+        working-directory: ./pl0i_src
+      - name: Compare output
+        run: |
+          echo ::group::output.txt
+          cat -n output.txt
+          echo ::endgroup::
+          echo ::group::expected.txt
+          cat -n expected.txt
+          echo ::endgroup::
+          echo ::group::diff
+          diff output.txt expected.txt || true
+          echo ::endgroup::
+        working-directory: ./pl0i_src
