@@ -110,7 +110,10 @@ fhead:
       int   i;
       list *tmp;
 
-      label = makelabel();
+      tmp = search_all($1.name);
+      if (tmp->kind == FUNC) {
+        label = tmp->a;
+      }
 
       make_params($3.val+1, label);
 
@@ -121,8 +124,13 @@ fhead:
 
 fid:
     ID {
-      if (search_all($1.name) == NULL){
-        addlist($1.name, FUNC, 0, level, 0);
+      list* tmp = search_all($1.name);
+      printf("fid %s %p\n", $1.name, tmp);
+      if (tmp == NULL){
+        addlist($1.name, FUNC, makelabel(), level, 0);
+      }
+      else if (tmp->kind == REF_FUNC) {
+        tmp->kind = FUNC;
       }
       else {
         sem_error1("fid");
@@ -638,10 +646,26 @@ F:
 
       tmpl = search_all($1.name);
       if (tmpl == NULL){
-        sem_error2("id as function");
+        // block で消されるので、 block 前に追加しておく
+        list* tmp = gettail();
+        while (tmp != NULL && tmp->kind != BLOCK) tmp = tmp->prev;
+        list* newl = (list*) malloc(sizeof(list));
+        if (newl == NULL){
+          perror("malloc");
+          exit(EXIT_FAILURE);
+        }
+        newl->name = $1.name;
+        newl->kind = REF_FUNC;
+        newl->a = makelabel();
+        newl->l = 0;
+        newl->params = $3.val;
+        newl->prev = tmp->prev;
+        tmp->prev = newl;
+
+        tmpl = newl;
       }
 
-      if (tmpl->kind != FUNC){
+      if (tmpl->kind != FUNC && tmpl->kind != REF_FUNC){
         sem_error2("id as function2");
       }
 
@@ -717,6 +741,10 @@ main(){
   while (tmp != NULL) {
     if (tmp->kind == REF_LABEL) {
       fprintf(stderr,"label %s is referenced but not defined\n", tmp->name);
+      exit(EXIT_FAILURE);
+    }
+    if (tmp->kind == REF_FUNC) {
+      fprintf(stderr,"function %s is referenced but not defined\n", tmp->name);
       exit(EXIT_FAILURE);
     }
     tmp = tmp->prev;

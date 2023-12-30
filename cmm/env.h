@@ -37,6 +37,7 @@ enum KIND
   CONSTANT,
   LABEL,
   REF_LABEL,
+  REF_FUNC,
 };
 
 #endif
