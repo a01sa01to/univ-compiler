@@ -609,7 +609,7 @@ jobs:
           9
           EOF
         working-directory: ./pl0i_src
-      - name: Run code.pl0i 1
+      - name: Run code.pl0i
         run: ./pl0i < input.txt > output.txt || true
         working-directory: ./pl0i_src
       - name: Create expected output
