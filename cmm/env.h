@@ -34,7 +34,9 @@ enum KIND
   VARIABLE,
   BLOCK,
   FUNC,
-  CONSTANT
+  CONSTANT,
+  LABEL,
+  REF_LABEL,
 };
 
 #endif
