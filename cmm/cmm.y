@@ -125,7 +125,6 @@ fhead:
 fid:
     ID {
       list* tmp = search_all($1.name);
-      printf("fid %s %p\n", $1.name, tmp);
       if (tmp == NULL){
         addlist($1.name, FUNC, makelabel(), level, 0);
       }
