@@ -423,7 +423,23 @@ whilestmt:
 
 forstmt:
     FOR st SEMI cond SEMI st SEMI DO st {
+      int label_start, label_end;
+      cptr *tmp;
 
+      label_start = makelabel();
+      label_end = makelabel();
+
+      tmp = $2.code;
+      tmp = mergecode(tmp, makecode(O_LAB, 0, label_start));
+      tmp = mergecode(tmp, $4.code);
+      tmp = mergecode(tmp, makecode(O_JPC, 0, label_end));
+      tmp = mergecode(tmp, $9.code);
+      tmp = mergecode(tmp, $6.code);
+      tmp = mergecode(tmp, makecode(O_JMP, 0, label_start));
+      tmp = mergecode(tmp, makecode(O_LAB, 0, label_end));
+
+      $$.code = tmp;
+      $$.val = 0;
     }
   ;
 
