@@ -661,35 +661,35 @@ jobs:
             var n;
             read n;
             sum := 0;
-            for (i := 1; i <= n; i++) {
+            for i := 1; i <= n; i++; do {
               sum = sum + i;
             }
             write sum;
             writeln;
             read n;
             sum = 0;
-            for (i = 1; i <= n; i++) {
+            for i = 1; i <= n; i++; do {
               sum = sum + i;
             }
             write sum;
             writeln;
             read n;
             sum = 0;
-            for (i = 1; i <= n; i++) {
+            for i = 1; i <= n; i++; do {
               sum = sum + i;
             }
             write sum;
             writeln;
             read n;
             sum = 0;
-            for (i = 1; i <= n; i++) {
+            for i = 1; i <= n; i++; do {
               sum = sum + i;
             }
             write sum;
             writeln;
             read n;
             sum = 0;
-            for (i = 1; i <= n; i++) {
+            for i = 1; i <= n; i++; do {
               sum = sum + i;
             }
             write sum;

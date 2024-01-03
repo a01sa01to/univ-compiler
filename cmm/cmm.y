@@ -422,7 +422,7 @@ whilestmt:
 
 
 forstmt:
-    FOR LPAR st SEMI cond SEMI st RPAR body {
+    FOR st SEMI cond SEMI st SEMI DO st {
 
     }
   ;
