@@ -422,7 +422,7 @@ whilestmt:
 
 
 forstmt:
-    FOR st SEMI cond SEMI st SEMI DO st {
+    FOR forst SEMI cond SEMI forst SEMI DO st {
       int label_start, label_end;
       cptr *tmp;
 
@@ -439,6 +439,34 @@ forstmt:
       tmp = mergecode(tmp, makecode(O_LAB, 0, label_end));
 
       $$.code = tmp;
+      $$.val = 0;
+    }
+  ;
+
+
+forst:
+    ID COLEQ E {
+      list *tmp;
+
+      tmp = search_all($1.name);
+
+      if (tmp == NULL){
+        sem_error2("assignment");
+      }
+
+      if (tmp->kind != VARIABLE){
+        sem_error2("assignment2");
+      }
+
+      $$.code = mergecode(
+        $3.code,
+        makecode(O_STO, level - tmp->l, tmp->a)
+      );
+      $$.val = 0;
+    }
+  |
+    /* epsilon */ {
+      $$.code = NULL;
       $$.val = 0;
     }
   ;
