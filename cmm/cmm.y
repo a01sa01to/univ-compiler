@@ -633,7 +633,12 @@ F:
       }
 
       if (tmpl->kind == VARIABLE){
-        $$.code = makecode(O_LOD, level - tmpl->l, tmpl->a)+1;
+        tmpc = makecode(O_LOD, level - tmpl->l, tmpl->a);
+        tmpc = mergecode(tmpc, makecode(O_LOD, level - tmpl->l, tmpl->a));
+        tmpc = mergecode(tmpc, makecode(O_LIT, 0, 1));
+        tmpc = mergecode(tmpc, makecode(O_OPR, 0, 2));
+        tmpc = mergecode(tmpc, makecode(O_STO, level - tmpl->l, tmpl->a));
+        $$.code = tmpc;
       }
       else {
         sem_error2("id as variable");
