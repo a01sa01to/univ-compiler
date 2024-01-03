@@ -736,7 +736,7 @@ jobs:
         run: |
           cat << EOF > code.cmm
           main {
-            var n;
+            var n, i, sum;
             read n;
             sum := 0;
             for i := 1; i <= n; i++; do {
@@ -745,30 +745,30 @@ jobs:
             write sum;
             writeln;
             read n;
-            sum = 0;
-            for i = 1; i <= n; i++; do {
-              sum = sum + i;
+            sum := 0;
+            for i := 1; i <= n; i++; do {
+              sum := sum + i;
             }
             write sum;
             writeln;
             read n;
-            sum = 0;
-            for i = 1; i <= n; i++; do {
-              sum = sum + i;
+            sum := 0;
+            for i := 1; i <= n; i++; do {
+              sum := sum + i;
             }
             write sum;
             writeln;
             read n;
-            sum = 0;
-            for i = 1; i <= n; i++; do {
-              sum = sum + i;
+            sum := 0;
+            for i := 1; i <= n; i++; do {
+              sum := sum + i;
             }
             write sum;
             writeln;
             read n;
-            sum = 0;
-            for i = 1; i <= n; i++; do {
-              sum = sum + i;
+            sum := 0;
+            for i := 1; i <= n; i++; do {
+              sum := sum + i;
             }
             write sum;
             writeln;
