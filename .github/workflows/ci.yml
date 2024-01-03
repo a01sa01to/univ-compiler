@@ -658,6 +658,7 @@ jobs:
         run: |
           cat << EOF > code.cmm
           main {
+            var v;
             v := 0;
             write v;
             write v++;
