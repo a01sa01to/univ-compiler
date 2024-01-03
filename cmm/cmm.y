@@ -312,6 +312,8 @@ st:
   |
     whilestmt
   |
+    forstmt
+  |
     { addlist("block", BLOCK, 0, 0, 0); }
     body {
       $$.code = $2.code;
@@ -415,6 +417,13 @@ whilestmt:
       $$.code = tmp;
 
       $$.val = 0;
+    }
+  ;
+
+
+forstmt:
+    FOR LPAR st SEMI cond SEMI st RPAR body {
+
     }
   ;
 
