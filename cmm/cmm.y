@@ -431,10 +431,10 @@ forstmt:
 
       tmp = $2.code;
       tmp = mergecode(tmp, makecode(O_LAB, 0, label_start));
-      tmp = mergecode(tmp, $4.code);
+      tmp = mergecode(tmp, $3.code);
       tmp = mergecode(tmp, makecode(O_JPC, 0, label_end));
-      tmp = mergecode(tmp, $9.code);
-      tmp = mergecode(tmp, $6.code);
+      tmp = mergecode(tmp, $7.code);
+      tmp = mergecode(tmp, $5.code);
       tmp = mergecode(tmp, makecode(O_JMP, 0, label_start));
       tmp = mergecode(tmp, makecode(O_LAB, 0, label_end));
 
