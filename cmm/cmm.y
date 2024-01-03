@@ -667,6 +667,50 @@ F:
       }
     }
   |
+    ID MINUS2 {
+      cptr *tmpc;
+      list* tmpl;
+
+      tmpl = search_all($1.name);
+      if (tmpl == NULL){
+        sem_error2("id");
+      }
+
+      if (tmpl->kind == VARIABLE){
+        tmpc = makecode(O_LOD, level - tmpl->l, tmpl->a);
+        tmpc = mergecode(tmpc, makecode(O_LOD, level - tmpl->l, tmpl->a));
+        tmpc = mergecode(tmpc, makecode(O_LIT, 0, 1));
+        tmpc = mergecode(tmpc, makecode(O_OPR, 0, 3));
+        tmpc = mergecode(tmpc, makecode(O_STO, level - tmpl->l, tmpl->a));
+        $$.code = tmpc;
+      }
+      else {
+        sem_error2("id as variable");
+      }
+    }
+  |
+    MINUS2 ID {
+      cptr *tmpc;
+      list* tmpl;
+
+      tmpl = search_all($1.name);
+      if (tmpl == NULL){
+        sem_error2("id");
+      }
+
+      if (tmpl->kind == VARIABLE){
+        tmpc = makecode(O_LOD, level - tmpl->l, tmpl->a);
+        tmpc = mergecode(tmpc, makecode(O_LIT, 0, 1));
+        tmpc = mergecode(tmpc, makecode(O_OPR, 0, 3));
+        tmpc = mergecode(tmpc, makecode(O_STO, level - tmpl->l, tmpl->a));
+        tmpc = mergecode(tmpc, makecode(O_LOD, level - tmpl->l, tmpl->a));
+        $$.code = tmpc;
+      }
+      else {
+        sem_error2("id as variable");
+      }
+    }
+  |
     ID LPAR fparams RPAR {
       list* tmpl;
 
