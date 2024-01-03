@@ -51,6 +51,7 @@ typedef struct Codeval {
 %token GOTO COL
 %token GE GT LE LT NE EQ
 %token RETURN
+%token FOR
 
 %%
 
